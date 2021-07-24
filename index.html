@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <title>Sortable Test</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
+        <script>
+            var saveDragId= '';
+            var saveDragHtml = '';
+            $(function(){
+                $('#left_card').sortable({
+                    group: 'list',
+                    animation: 200,
+                    ghostClass: 'ghost',
+                    onSort: reportActivity,
+                });
+
+                $('#right_card').sortable({
+                    group: 'list',
+                    animation: 200,
+                    ghostClass: 'ghost',
+                });
+
+
+                // Report when the sort order has changed
+                function reportActivity(evt) {
+                    if(saveDragHtml == ''){
+                        saveDragId = evt.item.dataset.id;
+                        saveDragHtml = `<div data-id="${evt.item.dataset.id}">${evt.item.innerHTML}</div>`;
+                    }else{
+                        
+                        $('#right_card').find(`div[data-id="${saveDragId}"]`).remove();
+                        $('#left_card').append(saveDragHtml);
+                        saveDragId = evt.item.dataset.id;
+                        saveDragHtml = `<div data-id="${evt.item.dataset.id}">${evt.item.innerHTML}</div>`;
+                    }
+                    
+                };
+            });
+        </script>
+    </head>
+    <style>
+        .container{ 
+            display: flex;
+        }
+        .card{
+            margin: 30px;
+            padding:20px;
+            width: 200px;
+            height:350px;
+            color:white;
+            background-color: lightseagreen;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .card div{
+            margin:10px;
+            padding:10px;
+            width:50px;
+            height:50px;
+            padding:10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color:white;
+            background-color: rgb(13, 66, 64);
+        }
+        .ghost {
+            opacity: 0.4;
+        }
+        .list-group {
+            margin: 20px;
+        }
+        button {
+            margin: 40px 20px;
+            float: right;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div id="left_card" class="card">
+                <div data-id="1.1" >Item 1.1</div>
+                <div data-id="1.2" >Item 1.2</div>
+                <div data-id="1.3" >Item 1.3</div>
+                <div data-id="1.4" >Item 1.4</div>
+                <div data-id="1.5" >Item 1.5</div>
+            </div>
+            <div id="right_card" class="card">
+
+            </div>
+          </div>
+
+    </body>
+</html>
